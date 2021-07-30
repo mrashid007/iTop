@@ -1,0 +1,332 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Content/css/MIS/onepcssgrid.css" rel="stylesheet" />
+
+    <link href="~/Content/css/MIS/dbzHtmlPagination.css" rel="stylesheet" />
+
+    <link href="~/Content/css/template.css" rel="stylesheet" />
+
+    <link href="~/Content/css/templateext.css" rel="stylesheet" />
+
+
+    <link href="~/Content/css/mainside.css" rel="stylesheet" />
+
+    <link href="~/Scripts/JQueryEasyUI/themes/icon.css" rel="stylesheet" />
+
+    <link href="~/Scripts/JQueryEasyUI/themes/gray/easyui.css" rel="stylesheet" />
+    @*<script src="~/Scripts/DatePicker/DateTimePicker.js"></script>
+    <link href="~/Scripts/DatePicker/jquery.ui.datepicker.css" rel="stylesheet" />
+    <link href="~/Scripts/DatePicker/DateTimePickerCss.css" rel="stylesheet" />*@
+
+
+    <script src="~/Scripts/modernizr-1.7.min.js"></script>
+
+    <script src="~/Scripts/JQueryEasyUI/jquery-1.8.0.min.js"></script>
+
+
+    <script src="~/Scripts/JQueryEasyUI/plugins/jquery.pagination.js"></script>
+
+    <script src="~/Scripts/MIS/jquery-ui-1.8.24.min.js"></script>
+
+    <script src="~/Scripts/MIS/jquery.ui.core.js"></script>
+
+    <script src="~/Scripts/MIS/jquery.ui.widget.js"></script>
+
+    <script src="~/Scripts/MIS/jquery.ui.effect.js"></script>
+
+    <script src="~/Scripts/MIS/jquery.ui.button.js"></script>
+
+    <script src="~/Scripts/MIS/jquery.ui.draggable.js"></script>
+
+    <script src="~/Scripts/MIS/jquery.ui.droppable.js"></script>
+
+    <script src="~/Scripts/MIS/jquery.ui.mouse.js"></script>
+
+    <script src="~/Scripts/MIS/jquery.ui.sortable.js"></script>
+
+    <script src="~/Scripts/MIS/dbzMISPortlets.js"></script>
+
+    <script src="~/Scripts/jquery.validate.js"></script>
+
+    <script src="~/Scripts/DevelopersScripts/dbzValidationChecking.js"></script>
+
+    <script src="~/Scripts/DevelopersScripts/dbzCustomizeEasyUIDataGrid.js"></script>
+    <script src="~/Scripts/zebra-datepicker.1.1.2/javascript/zebra_datepicker.js"></script>
+    <script src="~/Scripts/zebra-datepicker.1.1.2/javascript/zebra_datepicker.src.js"></script>
+    <link href="~/Scripts/zebra-datepicker.1.1.2/css/zebra_datepicker.css" rel="stylesheet" />
+    <script src="~/Scripts/JQueryEasyUI/jquery.easyui.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+
+            $('#FundGrid').hide();
+            $('#resellerGrid').hide();
+            $('#flexiLoadGrid').hide();
+            $('#bKashGrid').hide();
+
+            $.ajax({
+                url: '/Home/CheckSessionTimeOut',
+                type: "POST",
+                success: function (result) {
+                    if (result == "True") {
+                        window.top.location = "/Account/Login";
+                    }
+                },
+                complete: function () {
+                    // setupSessionTimeoutCheck();
+                }
+            });
+
+            $('#fromDate').Zebra_DatePicker();
+            $('#toDate').Zebra_DatePicker();
+
+
+            loadResellers();
+
+
+
+
+            $( "#ddlReportType" ).change(function() {
+                var val=$( "#ddlReportType" ).val();
+                //alert(val);
+                if(val==1)
+                {
+                    $('#resellerGrid').show();
+                    $('#FundGrid').hide();
+                    $('#flexiLoadGrid').hide();
+                    $('#bKashGrid').hide();
+
+                    $('#tblResellerGrid').datagrid();//'loadData', result
+
+                }
+                else if(val==2)
+                {
+                    $('#FundGrid').show();
+                    $('#resellerGrid').hide();
+                    $('#flexiLoadGrid').hide();
+                    $('#bKashGrid').hide();
+                    $('#tblFundGrid').datagrid();//'loadData', result
+                }
+                else if(val==3)
+                {
+                    $('#flexiLoadGrid').show();
+                    $('#resellerGrid').hide();
+                    $('#FundGrid').hide();
+                    $('#bKashGrid').hide();
+                    $('#tblFlexiLoadGrid').datagrid();//'loadData', result
+                }
+                else if(val==4)
+                {
+                    $('#bKashGrid').show();
+                    $('#resellerGrid').hide();
+                    $('#flexiLoadGrid').hide();
+                    $('#FundGrid').hide();
+                    $('#tblBKashGrid').datagrid();//'loadData', result
+                }
+                
+            });
+
+
+
+        })
+
+         function loadResellers() {
+
+            var id = '#childresellerList';
+
+            $.ajax({
+                url: '/Payment/LoadResellers',
+                type: 'Post',
+                dataType: 'json',
+                async: true,
+                contentType: 'application/json',
+                success: function (result) {
+                    $(id).empty();
+                    $(id).append("<option value='0'>---Select---</option>");
+                    for (var i = 0; i < result.length; i++) {
+                        $(id).append("<option value='" + result[i].Value + "'  title='" + result[i].Name + "'>" + result[i].Name + "</option>");
+                    }
+
+                    var resellerId = @ViewBag.resellerid
+                    //alert(resellerId);
+                    debugger;
+                    if(resellerId>0)
+                    {
+                        $(id).val(resellerId);
+                        //loadResellerToEdit(resellerId);
+                    }
+                },
+                error: function (result, textStatus, jqXHR) {
+
+                }
+            });
+         }
+
+        function ShowReport()
+        {
+            var reportType=$('#ddlReportType').val();
+            var fromDate=$('#fromDate').val();
+            var toDate=$('#toDate').val();
+            var resellerId=$('#childresellerList').val();
+
+            $.ajax({
+                url: '/Report/ShowReport',
+                type: 'Post',
+                data: JSON.stringify({ reportType: reportType, fromDate: fromDate,toDate:toDate,resellerId:resellerId }),
+                dataType: 'json',
+                async: true,
+                contentType: 'application/json',
+                success: function (result) {
+                    if(reportType==1)
+                        $('#tblResellerGrid').datagrid('loadData',result);
+                    else if(reportType==2)
+                        $('#tblFundGrid').datagrid('loadData',result);
+                    else if(reportType==3)
+                        $('#tblflexiLoadGrid').datagrid('loadData',result);
+                    else if(reportType==4)
+                        $('#tblbKashGrid').datagrid('loadData',result);
+                },
+                error: function (result, textStatus, jqXHR) {
+
+                }
+            });
+
+        }
+
+    </script>
+    <title>ReportView</title>
+</head>
+<body>
+
+        <div class="onerow">
+            <div class="col2">
+                <font face="verdana" size="3">Report Type</font>
+            </div>
+            <div class="col2">
+                <select id="ddlReportType" style="width: 100%">
+                    <option value="0">---Select---</option>
+                    <option value="1">Reseller List</option>
+                    <option value="2">Reseller Fund</option>
+                    <option value="3">Flexiload Detail</option>
+                    <option value="4">bKash Detail</option>
+                    @*<option value="5">Balance Detail</option>*@
+                </select>
+            </div>
+            <div class="col2">
+                <font face="verdana" size="3">Reseller</font>
+            </div>
+            <div class="col2">
+                <select id="childresellerList" style="width: 100%"></select>
+            </div>
+        </div>
+        <div class="onerow">
+            <br />
+            <div class="col2">
+                From Date
+            </div>
+            <div class="col3">
+                <input type="datetime" id="fromDate" />
+            </div>
+            <div class="col2">
+                To Date
+            </div>
+            <div class="col3">
+                <input type="datetime" id="toDate" />
+            </div>
+        </div>
+        <div class="onerow">
+
+            <br />
+           <input type="button" value="Show" title="Report" onclick="ShowReport()" />
+        </div>
+
+
+    
+    <div id="resellerGrid"style="width:auto;height:450px;padding:5px;background:#fafafa;">
+
+            <table id="tblResellerGrid" class="easyui-datagrid" toolbar="#toolbar" autorowheight="true"
+                   fitcolumns="true"
+                   singleselect="true"
+                   rownumbers="false"
+                   pagination="true"
+                   pagesize="10">
+                <thead>
+                    <tr>
+                        <th field="BkashId" hidden="true"></th>
+                        <th field="Name" width="40" sortable="true">Child Reseller Name</th>
+                        <th field="ContactNo" width="40" sortable="true">Contact No</th>
+                        <th field="ResellerLevelNo" width="30" sortable="true">Reseller Level</th>
+                        <th field="DateOfEntry" width="30" sortable="true">Create Date</th>
+                    </tr>
+                </thead>
+            </table>
+    </div>
+    <div id="FundGrid" style="width:auto;height:450px;padding:5px;background:#fafafa;">
+
+                <table id="tblFundGrid" class="easyui-datagrid" toolbar="#toolbar" autorowheight="true"
+                       fitcolumns="true"
+                       singleselect="true"
+                       rownumbers="false"
+                       pagination="true"
+                       pagesize="10">
+                    <thead>
+                        <tr>
+                            <th field="FundFor" width="20" sortable="true">FundFor</th>
+                            <th field="GivenBy" width="20" sortable="true">Given By</th>
+                            <th field="MobileAccountType" width="20" sortable="true">MobileAccountType</th>
+                            <th field="Amount" width="20" sortable="true">Amount</th>
+                            <th field="DateOfEntry" width="30" sortable="true">DateOfEntry</th>
+                            <th field="Remarks" width="20" sortable="true">Remarks</th>
+                            
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+    <div id="flexiLoadGrid" style="width:auto;height:450px;padding:5px;background:#fafafa;">
+        <table id="tblflexiLoadGrid" class="easyui-datagrid" toolbar="#toolbar" autorowheight="true"
+               fitcolumns="true"
+               singleselect="true"
+               rownumbers="false"
+               pagination="true"
+               pagesize="10">
+            <thead>
+                <tr>
+                    <th field="SentBy" width="20" sortable="true">Sent By</th>
+                    <th field="MobileNumber" width="40" sortable="true">Number</th>
+                    <th field="Amount" width="20" sortable="true">Amount</th>
+                    <th field="DateOfEntry" width="40" sortable="true">DateOfEntry</th>
+                    <th field="Status" width="30" sortable="true">Status</th>
+                </tr>
+            </thead>
+        </table>
+     </div>
+    <div id="bKashGrid" style="width:auto;height:450px;padding:5px;background:#fafafa;">
+
+            <table id="tblbKashGrid" class="easyui-datagrid" toolbar="#toolbar" autorowheight="true"
+                   fitcolumns="true"
+                   singleselect="true"
+                   rownumbers="false"
+                   pagination="true"
+                   pagesize="10">
+                <thead>
+                    <tr>
+                        <th field="SentBy" width="20" sortable="true">Sent By</th>
+                        <th field="BkashNumber" width="20" sortable="true">Number</th>
+                        <th field="Amount" width="20" sortable="true">Amount</th>
+                        <th field="DateOfEntry" width="25" sortable="true">DateOfEntry</th>                        
+                        <th field="Status" width="20" sortable="true">Status</th>
+                        <th field="TransectionId" width="20" sortable="true">Transection Id</th>
+                        <th field="Remarks" width="40" sortable="true">Remarks</th>
+                        
+                    </tr>
+                </thead>
+            </table>
+    </div>
+</body>
+</html>

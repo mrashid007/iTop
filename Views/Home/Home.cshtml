@@ -1,0 +1,669 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head id="Head1" runat="server">
+    <title>Auto Flexiload Management System</title>
+
+    <link href="~/Content/css/MIS/onepcssgrid.css" rel="stylesheet" />
+
+    <link href="~/Content/css/MIS/dbzHtmlPagination.css" rel="stylesheet" />
+
+    <link href="~/Content/css/template.css" rel="stylesheet" />
+
+    <link href="~/Content/css/templateext.css" rel="stylesheet" />
+
+
+    <link href="~/Content/css/mainside.css" rel="stylesheet" />
+
+    <link href="~/Scripts/JQueryEasyUI/themes/icon.css" rel="stylesheet" />
+
+    <link href="~/Scripts/JQueryEasyUI/themes/gray/easyui.css" rel="stylesheet" />
+
+    <script src="~/Scripts/modernizr-1.7.min.js"></script>
+
+    <script src="~/Scripts/JQueryEasyUI/jquery-1.8.0.min.js"></script>
+
+
+    <script src="~/Scripts/JQueryEasyUI/plugins/jquery.pagination.js"></script>
+
+    <script src="~/Scripts/MIS/jquery-ui-1.8.24.min.js"></script>
+
+    <script src="~/Scripts/MIS/jquery.ui.core.js"></script>
+
+    <script src="~/Scripts/MIS/jquery.ui.widget.js"></script>
+
+    <script src="~/Scripts/MIS/jquery.ui.effect.js"></script>
+
+    <script src="~/Scripts/MIS/jquery.ui.button.js"></script>
+
+    <script src="~/Scripts/MIS/jquery.ui.draggable.js"></script>
+
+    <script src="~/Scripts/MIS/jquery.ui.droppable.js"></script>
+
+    <script src="~/Scripts/MIS/jquery.ui.mouse.js"></script>
+
+    <script src="~/Scripts/MIS/jquery.ui.sortable.js"></script>
+
+    <script src="~/Scripts/MIS/dbzMISPortlets.js"></script>
+
+    <script src="~/Scripts/jquery.validate.js"></script>
+
+    <script src="~/Scripts/DevelopersScripts/dbzValidationChecking.js"></script>
+
+    <script src="~/Scripts/DevelopersScripts/dbzCustomizeEasyUIDataGrid.js"></script>
+
+    <script src="~/Scripts/JQueryEasyUI/jquery.easyui.min.js"></script>
+
+    <script>
+
+        //function checkSession() {
+        //    $.ajax({
+        //        url: '/Home/CheckSessionTimeOut',
+        //        type: "POST",
+        //        success: function (result) {
+        //            if (result == "True") {
+        //                window.top.location = "/Account/LogOn";
+        //            }
+        //        },
+        //        complete: function () {
+        //            //setupSessionTimeoutCheck();
+        //        }
+        //    });
+        //}
+
+        //function setupSessionTimeoutCheck() {
+        //    //clearTimeout(checkTimeout);
+        //    //checkTimeout = setTimeout(checkSession, 420000);  // 7 minutes
+        //}
+        //var checkTimeout;
+
+        $(document).ready(function () {
+
+           
+            $('#dd').dialog({
+                title: 'Shortcut List',
+                width: 400,
+                height: 200,
+                closed: false,
+                cache: false,
+                modal: true
+            });
+
+            $("#dd").dialog('close');
+            //checkTimeout = setTimeout(checkSession, 420000);  // 7 minutes
+           
+            $.ajax({
+                url: '/Home/CheckSessionTimeOut',
+                type: "POST",
+                success: function (result) {
+                    if (result == "True") {
+                        window.top.location = "/Account/Login";
+                    }
+                },
+                complete: function () {
+                    // setupSessionTimeoutCheck();
+                }
+            });
+            //$('#cc').layout('collapse', 'east');
+            LoadSummeryBalance();
+            addTab('Home', '/Home/Welcome');
+
+        });
+        $(function () {
+            //$('#tt').layout('collapse', 'east');
+            $('#cc').layout('collapse', 'east');
+           
+        });
+
+        function LoadSummeryBalance() {
+            $.ajax({
+                url: '/Home/GetSummeryBalance',
+                type: "POST",
+                success: function (result) {
+                    $("#lblUserName").html(result.UserName);
+                    $("#lblResellerLebel").html(result.ResellerLebel);
+                    $('#TotalBalanceAmnt').html(result.yourBalance);
+                    $('#BkashBalanceAmnt').html(result.bkashBalance);
+                    $('#FlexiBalanceAmnt').html(result.flexiBalance);
+                    $('#txtflexibalance').val(result.flexiBalance);
+                    $('#txtbkashbalance').val(result.bkashBalance);
+                },
+                complete: function () {
+                    // setupSessionTimeoutCheck();
+                }
+            });
+        }
+
+        function addTab(title, url) {
+            if ($('#tt').tabs('exists', title)) {
+                $('#tt').tabs('select', title);
+            } else {
+                var content = '<iframe class="ifarms" frameborder="0"  src="' + url + '" style="width:100%;height:99%;"></iframe>';
+                $('#tt').tabs('add', {
+                    title: title,
+                    content: content,
+                    closable: true
+                });
+            }
+            $(".ifarms").parent().css("width", "100%");
+            $(".ifarms").parent().css("height", "506px");
+            $("div.panel-body panel-body-noheader panel-body-noborder").css("width", "100%");
+            $("div.panel-body panel-body-noheader panel-body-noborder").css("height", "506px");
+        }
+
+        function LogOut() {
+            $.ajax({
+                url: '/Account/LogOff',
+                type: 'post',
+                success: function (result) {
+                    window.location = "/Account/LogIn";
+                }
+            });
+        }
+
+
+        function ShowShortCutDialog() {
+            $("#dd").dialog("open");
+        }
+
+        window.EditReseller = function (value) {
+            var title = "Reseller";
+            if ($('#tt').tabs('exists', title)) {
+                $('#tt').tabs('select', title);
+            } else {
+                var content = '<iframe class="ifarms" id="formReseller" frameborder="0"  src="/Reseller/Create?Id=' + value + '" style="width:100%;height:99%;"></iframe>';
+                $('#tt').tabs('add', {
+                    title: title,
+                    content: content,
+                    closable: true
+                });
+            }
+            $(".ifarms").parent().css("width", "100%");
+            $(".ifarms").parent().css("height", "506px");
+            $("div.panel-body panel-body-noheader panel-body-noborder").css("width", "100%");
+            $("div.panel-body panel-body-noheader panel-body-noborder").css("height", "506px");
+            //$('#formReseller').load(function () {
+            //    $("#formReseller").contents().find("#hdfResellerId").val(value);
+            //});
+
+
+        };
+        window.TotalBalanceDetail = function (value) {
+            var title = "Balance Detail";
+            if ($('#tt').tabs('exists', title)) {
+                $('#tt').tabs('select', title);
+            } else {
+                var content = '<iframe class="ifarms" id="formReseller" frameborder="0"  src="/Reseller/TotalBalanceDetail?Id=' + value + '" style="width:100%;height:99%;"></iframe>';
+                $('#tt').tabs('add', {
+                    title: title,
+                    content: content,
+                    closable: true
+                });
+            }
+            $(".ifarms").parent().css("width", "100%");
+            $(".ifarms").parent().css("height", "506px");
+            $("div.panel-body panel-body-noheader panel-body-noborder").css("width", "100%");
+            $("div.panel-body panel-body-noheader panel-body-noborder").css("height", "506px");
+            //$('#formReseller').load(function () {
+            //    $("#formReseller").contents().find("#hdfResellerId").val(value);
+            //});
+
+
+        };
+        window.FlexiBalanceDetail = function (value) {
+            var title = "Flexi Balance Detail";
+            if ($('#tt').tabs('exists', title)) {
+                $('#tt').tabs('select', title);
+            } else {
+                var content = '<iframe class="ifarms" id="formReseller" frameborder="0"  src="/Reseller/LoadFlexiTotalBalanceDetail?Id=' + value + '" style="width:100%;height:99%;"></iframe>';
+                $('#tt').tabs('add', {
+                    title: title,
+                    content: content,
+                    closable: true
+                });
+            }
+            $(".ifarms").parent().css("width", "100%");
+            $(".ifarms").parent().css("height", "506px");
+            $("div.panel-body panel-body-noheader panel-body-noborder").css("width", "100%");
+            $("div.panel-body panel-body-noheader panel-body-noborder").css("height", "506px");
+            //$('#formReseller').load(function () {
+            //    $("#formReseller").contents().find("#hdfResellerId").val(value);
+            //});
+
+
+        };
+        window.BkashBalanceDetail = function (value) {
+            var title = "Bkash Balance Detail";
+            if ($('#tt').tabs('exists', title)) {
+                $('#tt').tabs('select', title);
+            } else {
+                var content = '<iframe class="ifarms" id="formReseller" frameborder="0"  src="/Reseller/BkashBalanceDetail?Id=' + value + '" style="width:100%;height:99%;"></iframe>';
+                $('#tt').tabs('add', {
+                    title: title,
+                    content: content,
+                    closable: true
+                });
+            }
+            $(".ifarms").parent().css("width", "100%");
+            $(".ifarms").parent().css("height", "506px");
+            $("div.panel-body panel-body-noheader panel-body-noborder").css("width", "100%");
+            $("div.panel-body panel-body-noheader panel-body-noborder").css("height", "506px");
+            //$('#formReseller').load(function () {
+            //    $("#formReseller").contents().find("#hdfResellerId").val(value);
+            //});
+
+
+        };
+        window.AddFundToReseller = function (value) {
+            var title = "Payment";
+            if ($('#tt').tabs('exists', title)) {
+                $('#tt').tabs('select', title);
+            } else {
+                var content = '<iframe class="ifarms" id="formReseller" frameborder="0"  src="/Payment/Create?Id=' + value + '" style="width:100%;height:99%;"></iframe>';
+                $('#tt').tabs('add', {
+                    title: title,
+                    content: content,
+                    closable: true
+                });
+            }
+            $(".ifarms").parent().css("width", "100%");
+            $(".ifarms").parent().css("height", "506px");
+            $("div.panel-body panel-body-noheader panel-body-noborder").css("width", "100%");
+            $("div.panel-body panel-body-noheader panel-body-noborder").css("height", "506px");
+            //$('#formReseller').load(function () {
+            //    $("#formReseller").contents().find("#hdfResellerId").val(value);
+            //});
+
+
+        };
+    </script>
+
+    <style type="text/css">
+        .col1, .col2, .col3, .col4, .col5, .col6, .col7, .col8, .col9, .col10, .col11, .col12 {
+            @*background: none repeat scroll 0 0 #801255;
+            *@ margin-bottom: 5px;
+            padding: 2px 0;
+        }
+
+        .col7 {
+            width: 56.5%;
+        }
+
+        .contentDetails {
+            padding-left: 2%;
+            padding-top: 1%;
+        }
+
+            .contentDetails .divLeftPanel {
+                text-align: left;
+                float: left;
+                width: 31%;
+            }
+
+            .contentDetails .divRightPanel {
+                float: left;
+                width: 60%;
+            }
+
+        .divLeftPanel {
+        }
+
+        .ui-datepicker-trigger {
+            background-image: url("../../Scripts/JQueryEasyUI/themes/gray/images/datebox_arrow.png" );
+            background-repeat: no-repeat;
+            border: none;
+            width: 16px;
+            height: 16px;
+        }
+
+        .custom-buttons {
+            background-color: #E0E0E0;
+            background: -webkit-linear-gradient(top,#E0E0E0 0,#EFEFEF 100%);
+            background: -moz-linear-gradient(top,#E0E0E0 0,#EFEFEF 100%);
+            background: -o-linear-gradient(top,#E0E0E0 0,#EFEFEF 100%);
+            background: linear-gradient(to bottom,#E0E0E0 0,#EFEFEF 100%);
+            background-repeat: repeat-x;
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#EFF5FF,endColorstr=#E0ECFF,GradientType=0);
+            border-color: #BBBBBB;
+            padding: 0px;
+            position: relative;
+            border-width: 1px;
+            border-style: solid;
+            min-width: 75px;
+        }
+
+
+            .custom-buttons:hover {
+                background-color: #999999;
+                background: -webkit-linear-gradient(top,#999999 0,#ABABAB 100%);
+                background: -moz-linear-gradient(top,#999999 0,#ABABAB 100%);
+                background: -o-linear-gradient(top,#999999 0,#ABABAB 100%);
+                background: linear-gradient(to bottom,#999999 0,#ABABAB 100%);
+                background-repeat: repeat-x;
+                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#999999,endColorstr=#ABABAB,GradientType=0);
+                border-color: #BBBBBB;
+                padding: 0px;
+                position: relative;
+                border-width: 1px;
+                border-style: solid;
+                min-width: 75px;
+                color: #FFFFFF;
+            }
+
+        .leftLevelDiv {
+            width: 100%;
+        }
+
+        .colleft {
+            padding: 2px;
+            width: 25%;
+            float: left;
+        }
+
+        .colleftlast {
+            padding: 2px;
+            width: 60%;
+        }
+
+        .colleftlasttd {
+            padding: 2px;
+            width: 100%;
+        }
+        .tabs-wrap {
+            width: 100%;
+        } 
+        .panel-body {
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body style="background-color: #EFEFEF;">
+    <div style="height: 75px;">
+        <p style="float: left;">
+            <input type="text" hidden="hidden" id="txtbkashbalance" />
+            <input type="text" hidden="hidden" id="txtflexibalance" />
+        </p>
+        <div id="imgId" style="float: left; height: 60px; width: 15%;">
+            <img src="~/Content/Logo/logo.png" width="100%" height="70px" />
+        </div>
+        <div style="float: right; height: 60px; width: 82%;">
+            <div style="float: left; width: 25%">
+                <div style="float: left; width: 100%">
+                    <div style="height: 75px; width: 100%; margin: 6px; margin-left: 50px;">
+                        <div style="width: 100%">
+                            <label id="UserName" style="width: 50%; font-size: smaller;">
+                                Name :
+                            </label>
+                            <label id="lblUserName" style="width: 50%; font-size: smaller;">
+                                
+                            </label>
+                        </div>
+                        <div style="width: 100%">
+                            <label id="ResellerLebel" style="width: 25%; font-size: smaller;">
+                                Reseller Lebel:
+                            </label>
+                            <label id="lblResellerLebel" style="width: 75%; font-size: smaller;">
+
+                            </label>
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+            <div style="float: left; width: 50%">
+               @*<div onclick="ShowShortCutDialog()" style="background-image: url(~/Content/images/images.jpg_70x50.png)">Shortcut List</div>*@
+            </div>
+            <div style="float: right; width: 25%">
+                <table style="float: right">
+                    <tbody>
+                        <tr style="float: right">
+                            <td style="padding: 0px">
+                                <img onclick="LogOut();" style="height: 33px; width: 69px; cursor: pointer;" src="../../Content/images/up_panal1.jpg">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="cc" class="easyui-layout" style="width: 100%; height: 600px;">
+        <div data-options="region:'west',iconCls:'icon-search', title:'Menu',split:true" style="width: 245px;">
+            <div class="easyui-accordion" style="width: auto; height: 520px;">
+                <div title="New Reseller" data-options="iconCls:'icon-search'" style="padding: 10px;">
+                    @*<a href="#" class="easyui-linkbutton" onclick="addTab('google','http://www.google.com')">google</a>
+                        <a href="#" class="easyui-linkbutton" onclick="addTab('jquery','http://jquery.com/')">jquery</a>
+                        <a href="#" class="easyui-linkbutton" onclick="addTab('easyui','http://jeasyui.com/')">easyui</a>*@
+                    <ul class="easyui-tree">
+                        <li>
+                            <label style="cursor: pointer;" onclick="addTab('Reseller List', '/Reseller/Index')">
+                                Reseller List
+                            </label>
+                        </li>
+                        <li>
+                            <label style="cursor: pointer;" onclick="addTab('Reseller', '/Reseller/Create')">
+                                New Reseller
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+                <div title="Flexiload" data-options="iconCls:'icon-search'" style="padding: 10px;">
+                    <ul class="easyui-tree">
+                        <li>
+                            <label style="cursor: pointer;" onclick="addTab('Flexi List', '/Flexiload/Index')">
+                                Flexi List
+                            </label>
+                        </li>
+                        <li>
+                            <label style="cursor: pointer;" onclick="addTab('Flexi', '/Flexiload/Create')">
+                                New Flexiload
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+                <div title="BKash" data-options="iconCls:'icon-search'" style="padding: 10px;">
+                    <ul class="easyui-tree">
+                        <li>
+                            <label style="cursor: pointer;" onclick="addTab('bKash List', '/Bkash/Index')">
+                                BKash List
+                            </label>
+                        </li>
+                        <li>
+                            <label style="cursor: pointer;" onclick="addTab('bKash', '/Bkash/Create')">
+                                New bKash
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+                <div title="Payment" data-options="iconCls:'icon-search'" style="padding: 10px;">
+                    <ul class="easyui-tree">
+                        <li>
+                            <label style="cursor: pointer;" onclick="addTab('Payment List', '/Payment/Index')">
+                                Payment List
+                            </label>
+                        </li>
+                        <li>
+                            <label style="cursor: pointer;" onclick="addTab('Fund', '/Payment/Create')">
+                                Add Fund
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+                @{
+                    var value = ViewBag.loginReseller;
+                    if (value <= 0)
+                    {
+
+
+                        <div title="Approval" id="ApprovalPanel" data-options="iconCls:'icon-search'" style="padding: 10px;">
+                            <ul class="easyui-tree">
+                                <li>
+                                    <label style="cursor: pointer;" onclick="addTab('Flexiload', '/Approval/FlexiloadApproval')">
+                                        Flexiload
+                                    </label>
+                                </li>
+                                <li>
+                                    <label style="cursor: pointer;" onclick="addTab('bKash', '/Approval/BkashApproval')">
+                                        bKash
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                   }
+                }
+                <div title="Reporting" data-options="iconCls:'icon-search'" style="padding: 10px;">
+                    <ul class="easyui-tree">
+                        <li>
+                            <span>Reporting</span>
+                            <ul>
+                                <li>
+                                    <label style="cursor: pointer;" onclick="addTab('Report', '/Report/ReportView')">
+                                        Report
+                                    </label>
+
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div data-options="region:'center',iconCls:'icon-reload'" style="padding: 5px; width: auto; background: #eee;">
+            <div data-options="region:'center',iconCls:'icon-tip'" title="Main Title" style="overflow: visible; width: auto;">
+
+                <div id="tt" class="easyui-tabs" style="width: auto; height: 535px;">
+
+                </div>
+            </div>
+        </div>
+        <div id="dd" class="easyui-dialog" title="Shortcut List" style="width: 400px; height: 200px;"
+             data-options="iconCls:'icon-save',resizable:true,modal:true">
+            <div style="float: left; height: 60px; width: 15%">
+                <div style="float: left; background-color: burlywood; height: 60px; width: 95%">
+                    <label id="bkashBox" style="width: 100%; font-size: 12pt;">
+                        <img src="~/Content/images/images.jpg_70x50.png" style="width: 100%; height: 20px;"/>
+                        <a href="#" style="text-decoration: floralwhite;">bKash</a>
+                    </label>
+                </div>
+                <div style="float: left; background-color: whitesmoke; height: 60px; width: 5%">
+
+                </div>
+
+            </div>
+            <div style="float: left; height: 60px; width: 15%;">
+                <div style="float: left; background-color: burlywood; height: 60px; width: 95%">
+                    <label id="bkashDetailsBox" style="width: 100%; font-size: 12pt;">
+                        <img src="~/Content/images/images.jpg_70x50.png" style="width: 100%; height: 20px;"/>
+                        <a href="#" style="text-decoration: floralwhite;">bKash Detail</a>
+                    </label>
+                </div>
+                <div style="float: left; background-color: whitesmoke; height: 60px; width: 5%">
+
+                </div>
+            </div>
+            <div style="float: left; height: 60px; width: 15%;">
+                <div style="float: left; background-color: burlywood; height: 60px; width: 95%">
+                    <label id="flexiBox" style="width: 100%; font-size: 12pt;">
+                        <img src="~/Content/images/images.jpg_70x50.png" style="width: 100%; height: 20px;"/>
+                        <a href="#" style="text-decoration: floralwhite;">flexiload</a>
+                    </label>
+                </div>
+                <div style="float: left; background-color: whitesmoke; height: 60px; width: 5%">
+
+                </div>
+            </div>
+            <div style="float: left; height: 60px; width: 15%;">
+                <div style="float: left; background-color: burlywood; height: 60px; width: 95%">
+                    <label id="FlexiDetailBox" style="width: 100%; font-size: 12pt;">
+                        <img src="~/Content/images/images.jpg_70x50.png" style="width: 100%; height: 20px;"/>
+                        <a href="#" style="text-decoration: floralwhite;">flexiload Detail</a>
+                    </label>
+                </div>
+                <div style="float: left; background-color: whitesmoke; height: 60px; width: 5%">
+
+                </div>
+            </div>
+            <div style="float: left; height: 60px; width: 15%;">
+                <div style="float: left; background-color: burlywood; height: 60px; width: 95%">
+                    <label id="paymentBox" style="width: 100%; font-size: 12pt;">
+                        <img src="~/Content/images/images.jpg_70x50.png" style="width: 100%; height: 20px;"/>
+                        <a href="#" style="text-decoration: floralwhite;">Payment</a>
+                    </label>
+                </div>
+                <div style="float: left; background-color: whitesmoke; height: 60px; width: 5%">
+
+                </div>
+            </div>
+            <div style="float: left; height: 60px; width: 15%;">
+                <div style="float: left; background-color: burlywood; height: 60px; width: 95%">
+                    <label id="resellerBox" style="width: 100%; font-size: 12pt;">
+                        <img src="~/Content/images/images.jpg_70x50.png" style="width: 100%; height: 20px;"/>
+                        <a href="#" style="text-decoration: floralwhite;">New Reseller</a>
+                    </label>
+                </div>
+                <div style="float: left; background-color: whitesmoke; height: 60px; width: 5%">
+
+                </div>
+            </div>
+        </div>
+        <div data-options="region:'east',iconCls:'icon-help',title:'Info Details',split:true" style="width: 245px;">
+            <div style="width: 83%; height: 14%; outline: 1px; outline-color: grey; padding-top: 4%;
+                padding-left: 5%; padding-right: 5%">
+                <div style="width: 100%; height: 36%; background-color: #9A9A9A; text-emphasis-color: white;
+                    padding-left: 5%; padding-right: 5%">
+                    <div style="color: whitesmoke; padding-top: 3%">
+                        Login information
+                    </div>
+                    <br/>
+                    <div style="width: 100%">
+                        <label id="TotalBalance" style="width: 50%;">
+                            Your Balance:
+                        </label>
+                        <label id="TotalBalanceAmnt" style="width: 50%;">
+
+                        </label>
+                    </div>
+                    <div style="width: 100%">
+                        <label id="BkashBalance" style="width: 25%;">
+                            bKash Balance:
+                        </label>
+                        <label id="BkashBalanceAmnt" style="width: 75%;">
+
+                        </label>
+                    </div>
+                    <div style="width: 100%">
+                        <label id="FlexiBalance" style="width: 25%;">
+                            Flexi Balance:
+                        </label>
+                        <label id="FlexiBalanceAmnt" style="width: 75%;">
+
+                        </label>
+                    </div>
+                    <br/>
+                </div>
+            </div>
+            <div style="width: 83%; height: 26%; outline: 1px; outline-color: grey; padding-top: 3%;
+                padding-left: 5%; padding-right: 5%">
+                <div style="width: 100%; height: 20%; background-color: #9A9A9A; text-emphasis-color: white;
+                    padding-left: 5%; padding-right: 5%">
+                    <div style="color: whitesmoke; padding-top: 3%">
+                        Balance Details
+                    </div>
+                </div>
+                <div style="width: 100%; height: auto; padding-top: 5%; padding-left: 5%;">
+                </div>
+            </div>
+            
+        </div>
+        <div data-options="region:'south',split:true" style="height: 50px; background-color: #EFEFEF; text-align:center;">
+            <a href="www.mrashid.dev"> www.mrashid.dev</a>
+        </div>
+    </div>
+</body>
+
+</html>
