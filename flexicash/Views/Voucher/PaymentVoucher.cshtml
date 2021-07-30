@@ -1,0 +1,314 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link href="~/Content/css/MIS/themes/base/jquery.ui.all.css" rel="stylesheet" />
+    <link href="~/Content/css/MIS/onepcssgrid.css" rel="stylesheet" />
+    <link href="~/Content/css/MIS/dbzHtmlPagination.css" rel="stylesheet" />
+    <link href="~/Content/css/template.css" rel="stylesheet" />
+    <link href="~/Content/css/templateext.css" rel="stylesheet" />
+    <link href="~/Content/css/mainside.css" rel="stylesheet" />
+    <link href="~/Scripts/JQueryEasyUI/themes/icon.css" rel="stylesheet" />
+    <link href="~/Scripts/JQueryEasyUI/themes/gray/easyui.css" rel="stylesheet" />
+    <script src="~/Scripts/modernizr-1.7.min.js"></script>
+    <script src="~/Scripts/JQueryEasyUI/jquery-1.8.0.min.js"></script>
+    <script src="~/Scripts/JQueryEasyUI/jquery.easyui.min.js"></script>
+    <script src="~/Scripts/JQueryEasyUI/plugins/jquery.pagination.js"></script>
+    <script src="~/Scripts/MIS/jquery-ui-1.8.24.min.js"></script>
+    <script src="~/Scripts/MIS/jquery.ui.core.js"></script>
+    <script src="~/Scripts/MIS/jquery.ui.widget.js"></script>
+    <script src="~/Scripts/MIS/jquery.ui.effect.js"></script>
+    <script src="~/Scripts/MIS/jquery.ui.button.js"></script>
+    <script src="~/Scripts/MIS/jquery.ui.draggable.js"></script>
+    <script src="~/Scripts/MIS/jquery.ui.droppable.js"></script>
+    <script src="~/Scripts/MIS/jquery.ui.mouse.js"></script>
+    <script src="~/Scripts/MIS/jquery.ui.sortable.js"></script>
+    <script src="~/Scripts/MIS/dbzMISPortlets.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/DevelopersScripts/dbzValidationChecking.js"></script>
+    <script src="~/Scripts/DevelopersScripts/dbzCustomizeEasyUIDataGrid.js"></script>
+    <link href="~/Scripts/Toastr/toastr-responsive.css" rel="stylesheet" />
+    <link href="~/Scripts/Toastr/toastr.css" rel="stylesheet" />
+    <script src="~/Scripts/Toastr/toastr.js"></script>
+    <script src="~/Scripts/DatePicker/DateTimePicker.js"></script>
+    <link href="~/Scripts/DatePicker/jquery.ui.datepicker.css" rel="stylesheet" />
+    <link href="~/Scripts/DatePicker/DateTimePickerCss.css" rel="stylesheet" />
+    <script src="~/Scripts/jsPDF-1.2.60/jspdf.js"></script>
+    <script src="~/Scripts/jsPDF-1.2.60/plugins/from_html.js"></script>
+    <script src="~/Scripts/jsPDF-1.2.60/plugins/split_text_to_size.js"></script>
+    <script src="~/Scripts/jsPDF-1.2.60/plugins/standard_fonts_metrics.js"></script>
+    <script src="~/Scripts/jsPDF-1.2.60/libs/html2canvas/dist/html2canvas.js"></script>
+    <link href="~/Scripts/DatePicker/demos.css" rel="stylesheet" />
+    <script src="~/Scripts/jsPDF-1.2.60/FileSaver.js"></script>
+    <link href="~/Content/btsTable.css" rel="stylesheet" />
+    <link href="~/Content/themes/base/jquery.ui.theme.css" rel="stylesheet" />
+    <style type="text/css">
+        .col1, .col2, .col3, .col4, .col5, .col6, .col7, .col8, .col9, .col10, .col11, .col12 {
+            @*background: none repeat scroll 0 0 #801255;
+            *@margin-bottom: 5px;
+            padding: 2px 0;
+        }
+
+        .col7 {
+            width: 56.5%;
+        }
+
+        .contentDetails {
+            padding-left: 2%;
+            padding-top: 1%;
+        }
+
+            .contentDetails .divLeftPanel {
+                text-align: left;
+                float: left;
+                width: 31%;
+            }
+
+            .contentDetails .divRightPanel {
+                float: left;
+                width: 60%;
+            }
+
+        .divLeftPanel {
+        }
+
+        .ui-datepicker-trigger {
+            background-image: url("../../Scripts/JQueryEasyUI/themes/gray/images/datebox_arrow.png");
+            background-repeat: no-repeat;
+            border: none;
+            width: 16px;
+            height: 16px;
+        }
+
+        .custom-buttons {
+            background-color: #E0E0E0;
+            background: -webkit-linear-gradient(top, #E0E0E0 0, #EFEFEF 100%);
+            background: -moz-linear-gradient(top, #E0E0E0 0, #EFEFEF 100%);
+            background: -o-linear-gradient(top, #E0E0E0 0, #EFEFEF 100%);
+            background: linear-gradient(to bottom, #E0E0E0 0, #EFEFEF 100%);
+            background-repeat: repeat-x;
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#EFF5FF, endColorstr=#E0ECFF, GradientType=0);
+            border-color: #BBBBBB;
+            padding: 0px;
+            position: relative;
+            border-width: 1px;
+            border-style: solid;
+            min-width: 75px;
+        }
+
+
+            .custom-buttons:hover {
+                background-color: #999999;
+                background: -webkit-linear-gradient(top, #999999 0, #ABABAB 100%);
+                background: -moz-linear-gradient(top, #999999 0, #ABABAB 100%);
+                background: -o-linear-gradient(top, #999999 0, #ABABAB 100%);
+                background: linear-gradient(to bottom, #999999 0, #ABABAB 100%);
+                background-repeat: repeat-x;
+                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#999999, endColorstr=#ABABAB, GradientType=0);
+                border-color: #BBBBBB;
+                padding: 0px;
+                position: relative;
+                border-width: 1px;
+                border-style: solid;
+                min-width: 75px;
+                color: #FFFFFF;
+            }
+
+
+
+        .leftLevelDiv {
+            width: 100%;
+        }
+
+        .colleft {
+            padding: 2px;
+            width: 25%;
+            float: left;
+        }
+
+        .colleftlast {
+            padding: 2px;
+            width: 60%;
+        }
+
+        .colleftlasttd {
+            padding: 2px;
+            width: 100%;
+        }
+
+        .col2 {
+            width: 8%;
+        }
+    </style>
+    <script type="text/javascript">
+        $(function () {
+            $.ajax({
+                url: '/Home/CheckSessionTimeOut',
+                type: "POST",
+                success: function (result) {
+                    if (result == "True") {
+                        window.top.location = "/Account/Login";
+                    }
+                },
+                complete: function () {
+                    // setupSessionTimeoutCheck();
+                }
+            });
+
+            $('#txtDate').datepicker({
+                dateFormat: "yy-mm-dd"
+            });
+            $('#txtVoucherNo').val('@ViewBag.PVoucherNo');
+            $("#txtDate").datepicker("setDate", new Date());
+            LoadDebitLedger();
+            LoadCreditLedger();
+        });
+        function LoadDebitLedger() {
+            $.ajax({
+                url: '/Voucher/LoadPVDebitLedger',
+                async: true,
+                data: { Code: 'Expense' },
+                success: function (result) {
+                    var mySelect = $('#ddlDebitLedger');
+                    $.each(result, function (val, text) {
+                        mySelect.append(
+                            $('<option></option>').val(this.Id).html(this.Name)
+                        );
+                    });
+                },
+                error: function (result, textStatus, jqXHR) {
+
+                }
+            });
+        }
+        function LoadCreditLedger() {
+            $.ajax({
+                url: '/Voucher/LoadPVCreditLedger',
+                async: true,
+                data: { Code: 'Expense' },
+                success: function (result) {
+                    var mySelect = $('#ddlCreditLedger');
+                    $.each(result, function (val, text) {
+                        mySelect.append(
+                           $('<option></option>').val(this.Id).html(this.Name)
+                        );
+                    });
+                },
+                error: function (result, textStatus, jqXHR) {
+
+                }
+            });
+        }
+
+        function Add() {
+
+        }
+
+        function Search() {
+
+
+        }
+        function Save() {
+            var voucherNo = $('#txtVoucherNo').val();
+            var drbAccId = $('#ddlDebitLedger').val();
+            var crdAccId = $('#ddlCreditLedger').val();
+            var amount = $('#txtAmount').val();
+            var particuler = $('#txtParticulers').val();
+            var voucherDate = $('#txtDate').val();
+            $.ajax({
+                url: '/Voucher/SavePaymentVoucher',
+                type: 'post',
+                data: { voucherNo: voucherNo, drbAccId: drbAccId, crdAccId: crdAccId, amount: amount, particulers: particuler, voucherDate: voucherDate },
+                dataType: 'json',
+                success: function (result) {
+                    if (result.IsSuccess == true) {
+                        toastr.success(result.Message);
+                        $('#txtParticulers').val('');
+                        $('#txtAmount').val('');
+                        $('#btnSave').prop('disable',true);
+                    }
+                }
+
+            });
+
+        }
+        function Close() {
+            window.top.removePanel();
+        }
+    </script>
+
+</head>
+
+<body>
+
+    <div style="padding: 0px; width: 100%; overflow: visible">
+        <fieldset>
+            <legend>Voucher Info</legend>
+            <div class="onerow">
+                <div class="col2">
+                    Voucher No
+                </div>
+                <div class="col3">
+                    <input style="width: 100%" id="txtVoucherNo" readonly="readonly" type="text" />
+                </div>
+                <div class="col2">
+                    Date
+                </div>
+                <div class="col3">
+                    <input id="txtDate" style="width: 50%" type="text" />
+                </div>
+            </div>
+
+        </fieldset>
+        <fieldset>
+            <legend>Debit</legend>
+            <div class="onerow">
+                <div class="col2">
+                    Ledger <font color="red">*</font>
+                </div>
+                <div class="col3">
+                    <select id="ddlDebitLedger" style="width:100%"></select>
+                </div>
+                <div class="col2">
+                    Amount <font color="red">*</font>
+                </div>
+                <div class="col3">
+                    <input class="rounded" id="txtAmount" type="text" />
+                </div>
+
+            </div>
+
+        </fieldset>
+        <fieldset>
+            <legend>Credit</legend>
+            <div class="onerow">
+                <div class="col2">
+                    Ledger <font color="red">*</font>
+                </div>
+                <div class="col3">
+                    <select id="ddlCreditLedger" style="width:100%"></select>
+                </div>
+                <div class="col2">
+                    Particulers
+                </div>
+                <div class="col3">
+                    <textarea id="txtParticulers" style="width: 100%; height: 50px;"></textarea>
+                </div>
+
+            </div>
+        </fieldset>
+        <div class="onerow" style="align-content: center">
+            <br />
+            <br />
+            <input id="btnSave" type="button" class="br-buttons" value="Save" onclick="Save()" />
+            <input id="btnClose" type="button" class="br-buttons" value="Close" onclick="Close()" />
+        </div>
+    </div>
+</body>
+</html>
